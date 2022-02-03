@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class DataMasterTablaDeliResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        return  [
+            'id' => $this->id,
+            'user_id' => $this->user_id,
+            'uuid' => $this->uuid,
+            'version' => $this->version,
+            'code' => $this->code,
+            'format' => $this->format,
+            'template' => $this->template,
+            'description' => $this->description,
+            'process_type' => $this->process_type,
+            'process_description' => $this->process_description,
+            'logo_header' => $this->logo_header,
+            'position' => $this->position,
+            'data_basic_type1' => $this->data_basic_type1,
+            'data_basic_title1' => $this->data_basic_title1,
+            'data_basic_description1' => $this->data_basic_description1,
+            'data_basic_type2' => $this->data_basic_type2,
+            'data_basic_title2' => $this->data_basic_title2,
+            'data_basic_description2' => $this->data_basic_description2,
+            'data_basic_type3' => $this->data_basic_type3,
+            'data_basic_title3' => $this->data_basic_title3,
+            'data_basic_description3' => $this->data_basic_description3,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'id_user' => $this->user->id,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'photo' => $this->user->profile_photo_path,
+    ];   
+    }
+}
