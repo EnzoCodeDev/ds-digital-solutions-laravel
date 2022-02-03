@@ -6,10 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserSearchInfo;
+use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use Ramsey\Uuid\Uuid;
 
 class configurationProfile extends Controller
 {
+    /**
+     *
+     *
+     *
+     ********************************************
+     * Profile
+     ********************************************
+     *
+     *
+     *
+     * */
     public function updatePassword(Request $request, $uuid)
     {
         //Validar que vengan los datos
@@ -88,5 +101,27 @@ class configurationProfile extends Controller
             'res' => 'ok',
             'userSeach' => $userSeach
         ], 200);
+    }
+    /**
+     *
+     *
+     *
+     ********************************************
+     * Configurar roles
+     ********************************************
+     *
+     *
+     *
+     * */
+    public function indexPermision()
+    {
+        return response()->json([
+            'res' => true,
+            'permisos' => Permission::get(),
+        ], 200);
+    }
+    public function storeRol()
+    {
+        //
     }
 }

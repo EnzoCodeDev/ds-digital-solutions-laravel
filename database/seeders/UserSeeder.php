@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
             'uuid'=>'123e4567-e89b-12d3-a456-426655440000',
             'name' => 'Usuario Prueba',
             'email' => 'usuarioPrueba@gmail.com',
-            'password' => bcrypt('12345678')
-        ])->assignRole('admin');
+            'password' => bcrypt('1234567')
+        ])->assignRole('Administrador');
         User::factory(99)->create();
     }
 }
