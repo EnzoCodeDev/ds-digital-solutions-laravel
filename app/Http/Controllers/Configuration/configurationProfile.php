@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserSearchInfo;
+//Uso de los modelos de los permisos y usuario
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use Ramsey\Uuid\Uuid;
@@ -113,6 +115,7 @@ class configurationProfile extends Controller
      *
      *
      * */
+    //Obtener todos los permisos
     public function indexPermision()
     {
         return response()->json([
@@ -120,8 +123,31 @@ class configurationProfile extends Controller
             'permisos' => Permission::get(),
         ], 200);
     }
-    public function storeRol()
+    //Guardar un nuevo rol
+    public function storeRol(Request $request)
     {
-        //
+        //Validar que vengan los datos
+        $request->validate([
+            'nameRole' => ['required', 'string'],
+            'descripcionRole' => ['required', 'string'],
+        ]);
+        if(Role::where('name', $request->all()['nameRole'])->exists()){
+            return response()->json([
+                'res' => 'exist',
+            ]);
+        };
+        //Creacion del role
+        $uuid = Uuid::uuid1();
+        $uuid2 = Uuid::uuid4();
+        $role = Role::create(['name' => $request->all()['nameRole'], 'description' => $request->all()['descripcionRole'], 'uuid' => $uuid . $uuid2]);
+        //Asignacion de permisos al role
+        for ($i = 0; $i < count($request->all()['permisoSelected']); $i++) {
+            $role->givePermissionTo($request->all()['permisoSelected'][$i]);
+        };
+        return response()->json([
+            'res' => 'ok',
+            'role' => 'RoleCreate',
+            'permisos' => $role->permissions,
+        ], 200);
     }
 }
