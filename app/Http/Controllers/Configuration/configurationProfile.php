@@ -146,7 +146,7 @@ class configurationProfile extends Controller
         };
         return response()->json([
             'res' => 'ok',
-            'role' => 'RoleCreate',
+            'role' => $role,
             'permisos' => $role->permissions,
         ], 200);
     }
