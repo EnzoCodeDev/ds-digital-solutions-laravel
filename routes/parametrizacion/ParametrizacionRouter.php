@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'middleware' => 'api',
     'prefix' => 'parametrizacion',
-    'middleware' => 'auth:api',
+    // 'middleware' => 'auth:api',
 ], function ($router) {
     Route::get('index', [ParametrizacionController::class, 'index']);
     Route::get('index/{DocumentMaster}', [ParametrizacionController::class, 'view']);

@@ -80,22 +80,22 @@ class ParametrizacionController extends Controller
         ]);
         //Guardar los datos de la tarjeta
         for ($i = 1; $i < count($request->all()['optionTarget']); $i++) {
-            if ($request->all()['optionTarget'][$i][0]['card'] !== 'inhabilidado') {
+            if ($request->all()['optionTarget'][$i]['card'] !== 'inhabilidado') {
                 $NewDocumentMasterBody = DataMasterParametrizationBody::create([
                     'id_header' => $NewDocumentMaster->id,
                     'version' => $NewDocumentMaster->version,
-                    'number_card' => $request->all()['optionTarget'][$i][0]['card'],
-                    'title_card' => $request->all()['optionTarget'][$i][0]['titleCard'],
-                    'select_value' => $request->all()['optionTarget'][$i][0]['optionValue'],
-                    'text_description' => $request->all()['optionTarget'][$i][0]['text'] !== 'Tabla' ?$request->all()['optionTarget'][$i][0]['text']  : null,
-                    'columns' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i][0]['tabla']['column']) : null,
-                    'row' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tabla']['row']) : null,
-                    'celda_select' =>  $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['celda']) : null,
-                    'identity_data_position' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['type']) : null,
-                    'type_celda' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i][0]['tablaTypeCelda']['celdaType'] : null,
-                    'title_columns' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['title_columna']) : null,
-                    'list_value_celda' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['lista']) : null,
-                    'card_info_table' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['typeCeldaInfo']) : null,
+                    'number_card' => $request->all()['optionTarget'][$i]['card'],
+                    'title_card' => $request->all()['optionTarget'][$i]['titleCard'],
+                    'select_value' => $request->all()['optionTarget'][$i]['optionValue'],
+                    'text_description' => $request->all()['optionTarget'][$i]['text'] !== 'Tabla' ?$request->all()['optionTarget'][$i]['text']  : null,
+                    'columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tabla']['column']) : null,
+                    'row' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tabla']['row']) : null,
+                    'celda_select' =>  $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['celda']) : null,
+                    'identity_data_position' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['type']) : null,
+                    'type_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i]['tablaTypeCelda']['celdaType'] : null,
+                    'title_columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['title_columna']) : null,
+                    'list_value_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['lista']) : null,
+                    'card_info_table' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['typeCeldaInfo']) : null,
                 ]);
             }
             //Guardar los datos de la tablas de las tarjetas
@@ -144,22 +144,22 @@ class ParametrizacionController extends Controller
             'position' => json_encode($request->all()['position']),
         ]);
         for ($i = 1; $i < count($request->all()['optionTarget']); $i++) {
-            if ($request->all()['optionTarget'][$i][0]['card'] !== 'inhabilidado') {
+            if ($request->all()['optionTarget'][$i]['card'] !== 'inhabilidado') {
                 $DocumentMasterBody = DataMasterParametrizationBody::create([
                     'id_header' => $DocumentMasterHead->id,
                     'version' => $DocumentMasterHead->version,
-                    'number_card' => $request->all()['optionTarget'][$i][0]['card'],
-                    'title_card' => $request->all()['optionTarget'][$i][0]['titleCard'],
-                    'select_value' => $request->all()['optionTarget'][$i][0]['optionValue'],
-                    'text_description' => $request->all()['optionTarget'][$i][0]['text']  === 'Tabla' ? null : $request->all()['optionTarget'][$i][0]['text'],
-                    'columns' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i][0]['tabla']['column']) : null,
-                    'row' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tabla']['row']) : null,
-                    'celda_select' =>  $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['celda']) : null,
-                    'identity_data_position' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['type']) : null,
-                    'type_celda' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i][0]['tablaTypeCelda']['celdaType'] : null,
-                    'title_columns' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['title_columna']) : null,
-                    'list_value_celda' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['lista']) : null,
-                    'card_info_table' => $request->all()['optionTarget'][$i][0]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i][0]['tablaTypeCelda']['typeCeldaInfo']) : null,
+                    'number_card' => $request->all()['optionTarget'][$i]['card'],
+                    'title_card' => $request->all()['optionTarget'][$i]['titleCard'],
+                    'select_value' => $request->all()['optionTarget'][$i]['optionValue'],
+                    'text_description' => $request->all()['optionTarget'][$i]['text']  === 'Tabla' ? null : $request->all()['optionTarget'][$i]['text'],
+                    'columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tabla']['column']) : null,
+                    'row' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tabla']['row']) : null,
+                    'celda_select' =>  $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['celda']) : null,
+                    'identity_data_position' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['type']) : null,
+                    'type_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i]['tablaTypeCelda']['celdaType'] : null,
+                    'title_columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['title_columna']) : null,
+                    'list_value_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['lista']) : null,
+                    'card_info_table' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['typeCeldaInfo']) : null,
                 ]);
             }
         }

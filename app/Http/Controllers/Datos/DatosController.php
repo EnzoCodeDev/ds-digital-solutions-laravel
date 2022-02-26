@@ -105,67 +105,67 @@ class DatosController extends Controller
         ]);
         //Guardar los datos de la tarjeta
         for ($i = 1; $i < count($request->all()['option']); $i++) {
-            if ($request->all()['option'][$i][0]['card'] !== 'inhabilidado') {
+            if ($request->all()['option'][$i]['card'] !== 'inhabilidado') {
                 //Guardar una imagen
-                if ($request->all()['option'][$i][0]['optionValue'] === 'Imagen') {
+                if ($request->all()['option'][$i]['optionValue'] === 'Imagen') {
                     $uuidImg = Uuid::uuid1();
-                    $img = $request->all()['option'][$i][0]['img'];
+                    $img = $request->all()['option'][$i]['img'];
                     $archivo = base64_decode(explode(",", $img)[1]);
                     $archivo_format_img = explode(",", $img)[0];
-                    $nomImg = $request->all()['option'][$i][0]['img_extesion'] . '/' . $uuidImg . $request->all()['option'][$i][0]['img_extesion'];
+                    $nomImg = $request->all()['option'][$i]['img_extesion'] . '/' . $uuidImg . $request->all()['option'][$i]['img_extesion'];
                     Storage::disk('image')->put($nomImg, $archivo);
                 };
                 //Guardar un archivo
-                if ($request->all()['option'][$i][0]['optionValue'] === 'Archivo') {
+                if ($request->all()['option'][$i]['optionValue'] === 'Archivo') {
                     $uuidArchivo = Uuid::uuid1();
-                    $archivos = $request->all()['option'][$i][0]['archivo'];
+                    $archivos = $request->all()['option'][$i]['archivo'];
                     $archivo = base64_decode(explode(",", $archivos)[1]);
                     $archivoFormat = explode(",", $archivos)[0];
-                    $nomarchivo = $request->all()['option'][$i][0]['archivo_extesion'] . '/' . $uuidArchivo . $request->all()['option'][$i][0]['archivo_extesion'];
+                    $nomarchivo = $request->all()['option'][$i]['archivo_extesion'] . '/' . $uuidArchivo . $request->all()['option'][$i]['archivo_extesion'];
                     Storage::disk('file')->put($nomarchivo, $archivo);
                 };
                 $NewDocumentMasterDeligenciado = DocumentMaster::create([
-                    'id_card' => $request->all()['option'][$i][0]['card_id'],
+                    'id_card' => $request->all()['option'][$i]['card_id'],
                     'id_header' => $NewDocumentMasterDeligenciadoHeader->id,
                     'num_version' => $request->all()['documentMasterHead']['version'],
-                    'title_card' => $request->all()['option'][$i][0]['titleCard'],
-                    'type_card' => $request->all()['option'][$i][0]['optionValue'],
-                    'text_description' => $request->all()['option'][$i][0]['text'],
-                    'text_description_item' => $request->all()['option'][$i][0]['optionValue'] === 'Texto' ? $request->all()['option'][$i][0]['textDescription'] : null,
-                    'link' => $request->all()['option'][$i][0]['optionValue'] === 'Link' ? $request->all()['option'][$i][0]['link'] : null,
-                    'link_description' => $request->all()['option'][$i][0]['optionValue'] === 'Link' ? $request->all()['option'][$i][0]['linkDescription'] : null,
-                    'file' => $request->all()['option'][$i][0]['optionValue'] === 'Archivo' ? $nomarchivo : null,
-                    'format_archivo' => $request->all()['option'][$i][0]['optionValue'] === 'Archivo' ? $archivoFormat : null,
-                    'img' => $request->all()['option'][$i][0]['optionValue'] === 'Imagen' ? $nomImg  : null,
-                    'format_img' => $request->all()['option'][$i][0]['optionValue'] === 'Imagen' ? $archivo_format_img  : null,
-                    'date' => $request->all()['option'][$i][0]['optionValue'] === 'Fecha' ? $request->all()['option'][$i][0]['date'] : null,
+                    'title_card' => $request->all()['option'][$i]['titleCard'],
+                    'type_card' => $request->all()['option'][$i]['optionValue'],
+                    'text_description' => $request->all()['option'][$i]['text'],
+                    'text_description_item' => $request->all()['option'][$i]['optionValue'] === 'Texto' ? $request->all()['option'][$i]['textDescription'] : null,
+                    'link' => $request->all()['option'][$i]['optionValue'] === 'Link' ? $request->all()['option'][$i]['link'] : null,
+                    'link_description' => $request->all()['option'][$i]['optionValue'] === 'Link' ? $request->all()['option'][$i]['linkDescription'] : null,
+                    'file' => $request->all()['option'][$i]['optionValue'] === 'Archivo' ? $nomarchivo : null,
+                    'format_archivo' => $request->all()['option'][$i]['optionValue'] === 'Archivo' ? $archivoFormat : null,
+                    'img' => $request->all()['option'][$i]['optionValue'] === 'Imagen' ? $nomImg  : null,
+                    'format_img' => $request->all()['option'][$i]['optionValue'] === 'Imagen' ? $archivo_format_img  : null,
+                    'date' => $request->all()['option'][$i]['optionValue'] === 'Fecha' ? $request->all()['option'][$i]['date'] : null,
                 ]);
                 $NewDocumentMasterTableDeligenciado = null;
                 //Guardar la informacion si viene una tabla
-                if ($request->all()['option'][$i][0]['optionValue'] === 'Tabla') {
-                    for ($t = 0; $t < count($request->all()['option'][$i][0]['tablasValue']); $t++) {
+                if ($request->all()['option'][$i]['optionValue'] === 'Tabla') {
+                    for ($t = 0; $t < count($request->all()['option'][$i]['tablasValue']); $t++) {
                         //Convertir imagen a base 64 para guardar en la base de datos
-                        if ($request->all()['option'][$i][0]['tablasValue'][$t]['type'] === "Imagen titulo" || $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === "Imagen") {
+                        if ($request->all()['option'][$i]['tablasValue'][$t]['type'] === "Imagen titulo" || $request->all()['option'][$i]['tablasValue'][$t]['type'] === "Imagen") {
                             $uuidImgTable = Uuid::uuid1();
-                            $imgTable = $request->all()['option'][$i][0]['tablasValue'][$t]['img'];
+                            $imgTable = $request->all()['option'][$i]['tablasValue'][$t]['img'];
                             $archivo_table = base64_decode(explode(",", $imgTable)[1]);
                             $archivo_format_img_table = explode(",", $imgTable)[0];
-                            $nomImgtable = $request->all()['option'][$i][0]['tablasValue'][$t]['img_extesion'] . '/' . $uuidImgTable . $request->all()['option'][$i][0]['tablasValue'][$t]['img_extesion'];
+                            $nomImgtable = $request->all()['option'][$i]['tablasValue'][$t]['img_extesion'] . '/' . $uuidImgTable . $request->all()['option'][$i]['tablasValue'][$t]['img_extesion'];
                             Storage::disk('image')->put($nomImgtable, $archivo_table);
                         }
                         $NewDocumentMasterTableDeligenciado = DocumenMasterTable::create([
                             'id_header' => $NewDocumentMasterDeligenciadoHeader->id,
-                            'id_card' => $request->all()['option'][$i][0]['card_id'],
-                            'type_celda' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'],
-                            'index_celda' => $request->all()['option'][$i][0]['tablasValue'][$t]['index'],
-                            'title_celda' => isset($request->all()['option'][$i][0]['tablasValue'][$t]['titleCelda']) ? $request->all()['option'][$i][0]['tablasValue'][$t]['titleCelda'] : null,
-                            'text_description' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === 'Título texto' ? $request->all()['option'][$i][0]['tablasValue'][$t]['textDescription'] : null,
-                            'img' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === 'Imagen' || $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === 'Imagen titulo' ? $nomImgtable : null,
-                            'img_extension' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === 'Imagen' || $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === 'Imagen titulo' ? $archivo_format_img_table : null,
-                            'link' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === "link" ? $request->all()['option'][$i][0]['tablasValue'][$t]['link'] : null,
-                            'link_description' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === "link" ? $request->all()['option'][$i][0]['tablasValue'][$t]['linkDescription'] : null,
-                            'fecha' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === "fecha" ? $request->all()['option'][$i][0]['tablasValue'][$t]['fecha'] : null,
-                            'lista' => $request->all()['option'][$i][0]['tablasValue'][$t]['type'] === "lista" ? json_encode($request->all()['option'][$i][0]['tablasValue'][$t]['lista']) : null
+                            'id_card' => $request->all()['option'][$i]['card_id'],
+                            'type_celda' => $request->all()['option'][$i]['tablasValue'][$t]['type'],
+                            'index_celda' => $request->all()['option'][$i]['tablasValue'][$t]['index'],
+                            'title_celda' => isset($request->all()['option'][$i]['tablasValue'][$t]['titleCelda']) ? $request->all()['option'][$i]['tablasValue'][$t]['titleCelda'] : null,
+                            'text_description' => $request->all()['option'][$i]['tablasValue'][$t]['type'] === 'Título texto' ? $request->all()['option'][$i]['tablasValue'][$t]['textDescription'] : null,
+                            'img' => $request->all()['option'][$i]['tablasValue'][$t]['type'] === 'Imagen' || $request->all()['option'][$i]['tablasValue'][$t]['type'] === 'Imagen titulo' ? $nomImgtable : null,
+                            'img_extension' => $request->all()['option'][$i]['tablasValue'][$t]['type'] === 'Imagen' || $request->all()['option'][$i]['tablasValue'][$t]['type'] === 'Imagen titulo' ? $archivo_format_img_table : null,
+                            'link' => $request->all()['option'][$i]['tablasValue'][$t]['type'] === "link" ? $request->all()['option'][$i]['tablasValue'][$t]['link'] : null,
+                            'link_description' => $request->all()['option'][$i]['tablasValue'][$t]['type'] === "link" ? $request->all()['option'][$i]['tablasValue'][$t]['linkDescription'] : null,
+                            'fecha' => $request->all()['option'][$i]['tablasValue'][$t]['type'] === "fecha" ? $request->all()['option'][$i]['tablasValue'][$t]['fecha'] : null,
+                            'lista' => $request->all()['option'][$i]['tablasValue'][$t]['type'] === "lista" ? json_encode($request->all()['option'][$i]['tablasValue'][$t]['lista']) : null
                         ]);
                     };
                 };

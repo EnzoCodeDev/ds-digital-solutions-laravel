@@ -81,7 +81,10 @@ class configurationProfile extends Controller
         };
         //Guardar nuevo nombre
         User::where('uuid', $uuid)
-            ->update(['name' => $request->nombre]);
+            ->update([
+                'name' => $request->nombre,
+                'profile_photo_path' => $request->profile_photo_path
+            ]);
         //Verificar el link de la imagen
         if ($request->imgLink !== null) {
             User::where('uuid', $uuid)

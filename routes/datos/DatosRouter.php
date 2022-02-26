@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
     'middleware' => 'api',
     'prefix' => 'datos',
-    'middleware' => 'auth:api',
+    // 'middleware' => 'auth:api',
 ], function ($router) {
     Route::get('index', [DatosController::class, 'index']);
     Route::get('search/{consulta}', [DatosController::class, 'search']);

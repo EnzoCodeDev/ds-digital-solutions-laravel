@@ -28,6 +28,7 @@ class RegisterController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
+        $user->profile_photo_path = $request->img_header;
         $user->save();
         return response()->json([
             'res' => true,
