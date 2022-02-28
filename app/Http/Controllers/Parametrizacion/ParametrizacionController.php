@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DataMasterParametrizationHead;
 use App\Models\DataMasterParametrizationBody;
+use App\Models\DataMasterParametrizationTable;
 use App\Models\ProcesoModel;
 use App\Models\SubProcesos;
 use App\Models\DocumentStatusFlow;
@@ -90,15 +91,21 @@ class ParametrizacionController extends Controller
                     'text_description' => $request->all()['optionTarget'][$i]['text'] !== 'Tabla' ?$request->all()['optionTarget'][$i]['text']  : null,
                     'columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tabla']['column']) : null,
                     'row' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tabla']['row']) : null,
-                    'celda_select' =>  $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['celda']) : null,
-                    'identity_data_position' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['type']) : null,
-                    'type_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i]['tablaTypeCelda']['celdaType'] : null,
-                    'title_columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['title_columna']) : null,
-                    'list_value_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['lista']) : null,
-                    'card_info_table' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['typeCeldaInfo']) : null,
+                    'title_columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i]['arrayTitleColumns'] : null,
                 ]);
+                //Guardar los datos de la tablas de las tarjetas
+                if ($request->all()['optionTarget'][$i]['optionValue'] === 'Tabla') {
+                    for ($t = 0; $t < count($request->all()['optionTarget'][$i]['arrayTable']); $t++) {
+                        DataMasterParametrizationTable::create([
+                            'id_header' => $NewDocumentMaster->id,
+                            'id_card' => $NewDocumentMasterBody->id,
+                            'type_celda' => $request->all()['optionTarget'][$i]['arrayTable'][$t]['typeCelda'],
+                            'type_lista' => json_encode($request->all()['optionTarget'][$i]['arrayTable'][$t]['lista']),
+                            'index_table' => $request->all()['optionTarget'][$i]['arrayTable'][$t]['index'],
+                        ]);
+                    }
+                }
             }
-            //Guardar los datos de la tablas de las tarjetas
         }
         $StateDocument  = DocumentStatusFlow::create([
             'id_header_document' => $NewDocumentMaster->id,
@@ -108,8 +115,7 @@ class ParametrizacionController extends Controller
         return response()->json([
             'res' => 'success_new',
             'DocumentMasterHead' => $NewDocumentMaster,
-            'DocumentMasterBody' => $NewDocumentMasterBody,
-            'DocumentState' => $StateDocument,
+            'New_state'=> $StateDocument,
         ], 201);
     }
     //Actualiza un documento
