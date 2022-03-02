@@ -10,6 +10,7 @@ class DataMasterParametrizationTable extends Model
     use HasFactory;
     protected $fillable = [
         'id_header',
+        'id_header_version',
         'id_card',
         'type_celda',
         'type_lista',

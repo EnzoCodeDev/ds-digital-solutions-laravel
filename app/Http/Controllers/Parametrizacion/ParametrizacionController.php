@@ -40,10 +40,12 @@ class ParametrizacionController extends Controller
     {
         $DocumentMasterHead = DataMasterParametrizationHead::where('uuid', '=', $DocumentMaster)->first();
         $DocumentMasterBody = DataMasterParametrizationBody::where('id_header', '=', $DocumentMasterHead->id)->where('version', '=', $DocumentMasterHead->version)->get();
+        $DocumentMasterBodyTable = DataMasterParametrizationTable::where('id_header', '=', $DocumentMasterHead->id)->where('id_header_version', '=', $DocumentMasterHead->version)->get();
         return response()->json([
             'res' => 'success_view',
             'DocumentMasterHead' => $DocumentMasterHead,
             'DocumentMasterBody' => $DocumentMasterBody,
+            'DocumentMasterBodyTable' => $DocumentMasterBodyTable,
         ], 200);
     }
     //Crear un nuevo documento
@@ -98,6 +100,7 @@ class ParametrizacionController extends Controller
                     for ($t = 0; $t < count($request->all()['optionTarget'][$i]['arrayTable']); $t++) {
                         DataMasterParametrizationTable::create([
                             'id_header' => $NewDocumentMaster->id,
+                            'id_header_version' => $NewDocumentMaster->version,
                             'id_card' => $NewDocumentMasterBody->id,
                             'type_celda' => $request->all()['optionTarget'][$i]['arrayTable'][$t]['typeCelda'],
                             'type_lista' => json_encode($request->all()['optionTarget'][$i]['arrayTable'][$t]['lista']),
@@ -139,13 +142,14 @@ class ParametrizacionController extends Controller
         $DocumentMasterHead->update([
             'user_id' => \Auth::user()->id,
             'version' => $DocumentMasterHead->version + 1,
+            'state_document' => 1,
             'code' => $request->all()['code'],
             'format' => $request->all()['format'],
             'template' => $request->all()['template'],
             'description' => $request->all()['description'],
             'process_select' => $request->all()['process_option'],
             'sub_process_select' => $request->all()['sub_process_option'],
-            'position_data_basic' => $request->all()['dataBasicCount'] === [] ? json_encode([]) :  json_encode($request->all()['dataBasicCount']),
+            'position_data_basic' => $request->all()['dataBasicCount'] === [] ? json_encode([]) : json_encode($request->all()['dataBasicCount']),
             'data_basic' =>  $request->all()['data_basic'] === [] ? json_encode([])  : json_encode($request->all()['data_basic']),
             'position' => json_encode($request->all()['position']),
         ]);
@@ -157,22 +161,29 @@ class ParametrizacionController extends Controller
                     'number_card' => $request->all()['optionTarget'][$i]['card'],
                     'title_card' => $request->all()['optionTarget'][$i]['titleCard'],
                     'select_value' => $request->all()['optionTarget'][$i]['optionValue'],
-                    'text_description' => $request->all()['optionTarget'][$i]['text']  === 'Tabla' ? null : $request->all()['optionTarget'][$i]['text'],
+                    'text_description' => $request->all()['optionTarget'][$i]['text'] !== 'Tabla' ?$request->all()['optionTarget'][$i]['text']  : null,
                     'columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tabla']['column']) : null,
                     'row' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tabla']['row']) : null,
-                    'celda_select' =>  $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['celda']) : null,
-                    'identity_data_position' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['type']) : null,
-                    'type_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i]['tablaTypeCelda']['celdaType'] : null,
-                    'title_columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['title_columna']) : null,
-                    'list_value_celda' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['lista']) : null,
-                    'card_info_table' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ? json_encode($request->all()['optionTarget'][$i]['tablaTypeCelda']['typeCeldaInfo']) : null,
+                    'title_columns' => $request->all()['optionTarget'][$i]['optionValue'] === 'Tabla' ?  $request->all()['optionTarget'][$i]['arrayTitleColumns'] : null,
                 ]);
-            }
+                //Guardar los datos de la tablas de las tarjetas
+                if ($request->all()['optionTarget'][$i]['optionValue'] === 'Tabla') {
+                    for ($t = 0; $t < count($request->all()['optionTarget'][$i]['arrayTable']); $t++) {
+                        DataMasterParametrizationTable::create([
+                            'id_header' => $DocumentMasterHead->id,
+                            'id_header_version' => $DocumentMasterHead->version,
+                            'id_card' => $DocumentMasterBody->id,
+                            'type_celda' => $request->all()['optionTarget'][$i]['arrayTable'][$t]['typeCelda'],
+                            'type_lista' => json_encode($request->all()['optionTarget'][$i]['arrayTable'][$t]['lista']),
+                            'index_table' => $request->all()['optionTarget'][$i]['arrayTable'][$t]['index'],
+                        ]);
+                    };
+                };
+            };
         }
         return response()->json([
             'res' => 'success_update',
             'DocumentMasterHead' => $DocumentMasterHead,
-            'DocumentMasterBody' => $DocumentMasterBody
         ], 201);
     }
     /**

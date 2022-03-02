@@ -16,6 +16,7 @@ class CreateDataMasterParametrizationTablesTable extends Migration
         Schema::create('data_master_parametrization_tables', function (Blueprint $table) {
             $table->id();
             $table->integer('id_header')->unsigned();
+            $table->integer('id_header_version');
             $table->integer('id_card')->unsigned();
             $table->string('type_celda');
             $table->string('type_lista',5000);
